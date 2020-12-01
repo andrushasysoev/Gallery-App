@@ -5,8 +5,7 @@ import { Router, Route, Switch } from "react-router-dom";
 import { loadPhotos } from "../actions";
 import {
   userAccessToken,
-  unsplashLoadPhotos,
-  unsplashGetUser,
+  unsplashLoadPhotos
 } from "../unsplash";
 
 import getFormattedDate from "../utils";
