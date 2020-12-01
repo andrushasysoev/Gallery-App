@@ -3,7 +3,7 @@ import Unsplash, { toJson } from "unsplash-js";
 export const unsplash = new Unsplash({
   accessKey: "f60KlEClDfDpIHtoobmqEeGJH1ru4FPH-5-ECoF8wMg",
   secret: "4gH5j7pd30fa60npPqB2X8EEIK3BQP-UsTuJBEFyfGY",
-  callbackUrl: "http://metayuoi.ru/photos",
+  callbackUrl: "http://localhost:8080/photos",
 });
 
 export const authenticationUrl = unsplash.auth.getAuthenticationUrl([

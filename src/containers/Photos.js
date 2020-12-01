@@ -30,13 +30,15 @@ class Photos extends React.Component {
 
   loadPhotos() {
     let page = localStorage.getItem("page");
+    const scrollPosition = window.pageYOffset;
 
     unsplashLoadPhotos(page, localStorage.getItem("token"))
       .then((photos) => {
         this.props.loadPhotos(photos);
       })
       .then(() => {
-        localStorage.setItem("page", +page + 1);
+        localStorage.setItem("page", + page + 1);
+        window.scrollTo({top: scrollPosition});
       });
   }
 
