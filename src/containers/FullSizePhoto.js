@@ -5,14 +5,15 @@ import { connect } from "react-redux";
 import { likePhoto, unlikePhoto } from "../actions";
 import { unsplashLikePhoto, unsplashUnlikePhoto } from "../unsplash";
 
-import liked from "../img/001-like.png";
-import unliked from "../img/002-heart.png";
-import close from "../img/003-left-arrow.png";
+import getFormattedDate from "../utils";
+
+import liked from "../assets/001-like.png";
+import unliked from "../assets/002-heart.png";
+import close from "../assets/003-left-arrow.png";
 
 class FullSizePhoto extends React.Component {
   constructor(props) {
     super(props);
-    this.getFormattedDate = this.getFormattedDate.bind(this);
 
     const id = location.pathname.split("photos/")[1];
     let photo = {};
@@ -23,9 +24,15 @@ class FullSizePhoto extends React.Component {
       }
     });
 
-    this.state = {
-      photo: photo,
-    };
+    this.state = { photo };
+  }
+
+  componentDidMount() {
+    document.body.style.overflowY = "hidden";
+  }
+
+  componentWillUnmount() {
+    document.body.style.overflowY = "auto";
   }
 
   toggleLike() {
@@ -39,36 +46,6 @@ class FullSizePhoto extends React.Component {
       unsplashLikePhoto(id, token);
       this.props.likePhoto(id);
     }
-  }
-
-  getFormattedDate(UTCvalue) {
-    const date = new Date(UTCvalue);
-    const months = [
-      "января",
-      "февраля",
-      "марта",
-      "апреля",
-      "мая",
-      "июня",
-      "июля",
-      "августа",
-      "сентября",
-      "октября",
-      "ноября",
-      "декабря",
-    ];
-
-    return (
-      date.getDate() +
-      " " +
-      months[date.getMonth()] +
-      " " +
-      date.getFullYear() +
-      " " +
-      date.getHours() +
-      ":" +
-      (date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes())
-    );
   }
 
   render() {
@@ -90,7 +67,7 @@ class FullSizePhoto extends React.Component {
     const image = this.state.photo.urls.small;
     const isLiked = this.state.photo.liked_by_user;
     const likesCount = this.state.photo.likes;
-    const date = this.getFormattedDate(this.state.photo.updated_at);
+    const date = getFormattedDate(this.state.photo.updated_at);
 
     return (
       <div className="overlay-modal">

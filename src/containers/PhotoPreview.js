@@ -35,10 +35,6 @@ class PhotoPreview extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    photos: state,
-  };
-}
+const mapStateToProps = (photos) => ({ photos });
 
 export default connect(mapStateToProps)(PhotoPreview);

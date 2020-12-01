@@ -100,7 +100,17 @@ header {
     justify-content: space-between;
     align-items: center;
 }
-.user-data {
+
+.logo__image {
+    padding: 5px 0;
+}
+
+.logo__user-data {
+    padding-left: 25px;
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Logo_of_Unsplash.svg/768px-Logo_of_Unsplash.svg.png);
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-position: left center;
     font-weight: 100;
 }
 
@@ -108,7 +118,7 @@ header {
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .photo-gallery__item {
@@ -196,6 +206,7 @@ header {
     background-color: rgba(0, 0, 0, 0.493);
     top: 0;
     left: 0;
+    z-index: 15;
     overflow: auto;
     width: 100vw;
     height: 100vh;
@@ -208,6 +219,7 @@ header {
     top: 0;
     left: 0;
     z-index: -1;
+    cursor: zoom-out;
 }
 
 .full-photo {
@@ -221,6 +233,7 @@ header {
     padding: 25px;
     border-radius: 15px;
     background: white;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.25);
 }
 
 .full-photo__close-button {

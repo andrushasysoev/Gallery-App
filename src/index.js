@@ -9,11 +9,9 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 
 import gallery from "./reducers";
-import Auth from "./containers/Auth";
+import Auth from "./components/Auth";
 import Photos from "./containers/Photos";
 import FullSizePhoto from "./containers/FullSizePhoto";
-
-document.querySelector("body").innerHTML = '<div id="app"></div>';
 
 localStorage.setItem("page", 1);
 
@@ -23,11 +21,9 @@ const customHistory = createBrowserHistory();
 ReactDOM.render(
   <Provider store={store}>
     <Router history={customHistory}>
-      <Switch>
-        <Route exact path="/photos/:id" component={FullSizePhoto} />
-        <Route exact path="/photos" component={Photos} />
-        <Route exact path="/" component={Auth} />
-      </Switch>
+      <Route exact path="/" component={Auth} />
+      <Route path="/photos" component={Photos} />
+      <Route exact path="/photos/:id" component={FullSizePhoto} />
     </Router>
   </Provider>,
   document.querySelector("#app")

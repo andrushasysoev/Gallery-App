@@ -1,20 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Router, Route, Switch } from "react-router-dom";
 
-import { loadPhotos } from "../actions";
-import { userAccessToken, unsplashLoadPhotos } from "../unsplash";
+import { loadPhotos, getUserName } from "../actions";
+import {
+  userAccessToken,
+  unsplashLoadPhotos,
+  unsplashGetUser,
+} from "../unsplash";
 
-import PhotoPreview from "../components/PhotoPreview";
+import getFormattedDate from "../utils";
 
-import logo from "../img/logo.png";
+import PhotoPreview from "../containers/PhotoPreview";
 
-let itemsLoaded = false;
+import logo from "../assets/logo.png";
+
+let itemsWereLoaded = false;
+let usernameIsAvailable = false;
 
 class Photos extends React.Component {
   constructor() {
     super();
     this.loadPhotos = this.loadPhotos.bind(this);
-    this.getFormattedDate = this.getFormattedDate.bind(this);
 
     if (!localStorage.getItem("token")) {
       userAccessToken(location.search.split("code=")[1]);
@@ -22,9 +29,9 @@ class Photos extends React.Component {
   }
 
   componentDidMount() {
-    if (!itemsLoaded) {
+    if (!itemsWereLoaded) {
       this.loadPhotos();
-      itemsLoaded = true;
+      itemsWereLoaded = true;
     }
   }
 
@@ -37,50 +44,30 @@ class Photos extends React.Component {
         this.props.loadPhotos(photos);
       })
       .then(() => {
-        localStorage.setItem("page", + page + 1);
-        window.scrollTo({top: scrollPosition});
+        localStorage.setItem("page", +page + 1);
+        window.scrollTo({ top: scrollPosition });
+        if (!usernameIsAvailable) {
+          this.getUserName();
+          usernameIsAvailable = true;
+        }
       });
   }
 
-  getFormattedDate(UTCvalue) {
-    const date = new Date(UTCvalue);
-    const months = [
-      "января",
-      "февраля",
-      "марта",
-      "апреля",
-      "мая",
-      "июня",
-      "июля",
-      "августа",
-      "сентября",
-      "октября",
-      "ноября",
-      "декабря",
-    ];
-
-    return (
-      date.getDate() +
-      " " +
-      months[date.getMonth()] +
-      " " +
-      date.getFullYear() +
-      " " +
-      date.getHours() +
-      ":" +
-      (date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes())
-    );
+  getUserName() {
+    unsplashGetUser().then((user) => {
+      this.props.getUserName(user.username);
+    });
   }
 
   render() {
     return (
-      <div className="photos-screen">
+      <div>
         <header>
           <div className="fixed-container clearfix">
             <div className="logo">
-              <img src={logo} />
+              <img src={logo} className="logo__image" />
 
-              <div className="user-data">Lyudmila Minakova</div>
+              <div className="logo__user-data">Lyudmila Minakova</div>
             </div>
           </div>
         </header>
@@ -96,7 +83,7 @@ class Photos extends React.Component {
                   url={photo.user.links.html}
                   image={photo.urls.thumb}
                   likesCount={photo.likes}
-                  date={this.getFormattedDate(photo.updated_at)}
+                  date={getFormattedDate(photo.updated_at)}
                 />
               );
             })}
@@ -116,15 +103,12 @@ class Photos extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    photos: state,
-  };
-}
+const mapStateToProps = (photos) => ({ photos });
 
 function mapDispatchToProps(dispatch) {
   return {
     loadPhotos: (photos) => dispatch(loadPhotos(photos)),
+    getUserName: (photos) => dispatch(getUserName(photos)),
   };
 }
 
