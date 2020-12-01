@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter, Link } from "react-router-dom";
 
-import like from "../img/001-like.png";
+import like from "../assets/001-like.png";
 
 class PhotoPreview extends React.Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Router, Route, Switch } from "react-router-dom";
 
-import { loadPhotos, getUserName } from "../actions";
+import { loadPhotos } from "../actions";
 import {
   userAccessToken,
   unsplashLoadPhotos,
@@ -51,12 +51,6 @@ class Photos extends React.Component {
           usernameIsAvailable = true;
         }
       });
-  }
-
-  getUserName() {
-    unsplashGetUser().then((user) => {
-      this.props.getUserName(user.username);
-    });
   }
 
   render() {
