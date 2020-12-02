@@ -103,7 +103,7 @@ class FullSizePhoto extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    photos: state.map((photo, i) => {
+    photos: state.photos.map((photo, i) => {
       photo.number = i;
       return photo;
     }),

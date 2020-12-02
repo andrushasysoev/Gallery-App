@@ -5,17 +5,24 @@ import ReactDOM from "react-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 
-import gallery from "./reducers";
+import photos from "./reducers/photos";
+import user from "./reducers/user";
+
 import Auth from "./components/Auth";
 import Photos from "./containers/Photos";
 import FullSizePhoto from "./containers/FullSizePhoto";
 
 localStorage.setItem("page", 1);
 
-const store = createStore(gallery);
+const rootReducer = combineReducers({
+  photos,
+  user,
+});
+
+const store = createStore(rootReducer);
 const customHistory = createBrowserHistory();
 
 ReactDOM.render(

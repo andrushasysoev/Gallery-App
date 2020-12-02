@@ -20,10 +20,16 @@ export const userAccessToken = (OAUTH_CODE) => {
     });
 };
 
-export const unsplashLoadPhotos = (page, token) => {
+export const unsplashGetUser = (token) => {
   unsplash.auth.setBearerToken(token);
 
-  return unsplash.photos.listPhotos(page, 10, "latest").then(toJson);
+  return unsplash.currentUser.profile().then(toJson);
+};
+
+export const unsplashLoadPhotos = (page, token, perPage = 10) => {
+  unsplash.auth.setBearerToken(token);
+
+  return unsplash.photos.listPhotos(page, perPage, "latest").then(toJson);
 };
 
 export const unsplashLikePhoto = (id, token) => {

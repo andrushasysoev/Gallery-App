@@ -2,10 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Router, Route, Switch } from "react-router-dom";
 
-import { loadPhotos } from "../actions";
+import { loadPhotos, getUserName } from "../actions";
 import {
   userAccessToken,
-  unsplashLoadPhotos
+  unsplashGetUser,
+  unsplashLoadPhotos,
 } from "../unsplash";
 
 import getFormattedDate from "../utils";
@@ -20,6 +21,7 @@ class Photos extends React.Component {
   constructor() {
     super();
     this.loadPhotos = this.loadPhotos.bind(this);
+    this.getUserName = this.getUserName.bind(this);
 
     if (!localStorage.getItem("token")) {
       userAccessToken(location.search.split("code=")[1]);
@@ -31,6 +33,8 @@ class Photos extends React.Component {
       this.loadPhotos();
       itemsWereLoaded = true;
     }
+
+    this.getUserName();
   }
 
   loadPhotos() {
@@ -47,6 +51,12 @@ class Photos extends React.Component {
       });
   }
 
+  getUserName() {
+    unsplashGetUser().then((user) => {
+      this.props.getUserName(user);
+    });
+  }
+
   render() {
     return (
       <div>
@@ -55,7 +65,7 @@ class Photos extends React.Component {
             <div className="logo">
               <img src={logo} className="logo__image" />
 
-              <div className="logo__user-data">Lyudmila Minakova</div>
+              <div className="logo__user-data">{this.props.user.username}</div>
             </div>
           </div>
         </header>
@@ -91,11 +101,12 @@ class Photos extends React.Component {
   }
 }
 
-const mapStateToProps = (photos) => ({ photos });
+const mapStateToProps = (state) => ({ photos: state.photos, user: state.user });
 
 function mapDispatchToProps(dispatch) {
   return {
     loadPhotos: (photos) => dispatch(loadPhotos(photos)),
+    getUserName: (user) => dispatch(getUserName(user)),
   };
 }
 

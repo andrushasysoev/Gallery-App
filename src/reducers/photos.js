@@ -1,8 +1,8 @@
-const gallery = (state = [], action) => {
+const photos = (state = [], action) => {
   switch (action.type) {
     case "LOAD_PHOTOS":
       return [...state, ...action.photos];
-          
+
     case "LIKE_PHOTO":
       return state.map((photo) => {
         if (photo.id === action.id) {
@@ -12,7 +12,7 @@ const gallery = (state = [], action) => {
         }
         return photo;
       });
-          
+
     case "UNLIKE_PHOTO":
       return state.map((photo) => {
         if (photo.id === action.id) {
@@ -27,4 +27,4 @@ const gallery = (state = [], action) => {
   }
 };
 
-export default gallery;
+export default photos;
