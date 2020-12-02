@@ -15,7 +15,6 @@ import PhotoPreview from "../containers/PhotoPreview";
 import logo from "../assets/logo.png";
 
 let itemsWereLoaded = false;
-let usernameIsAvailable = false;
 
 class Photos extends React.Component {
   constructor() {
@@ -45,10 +44,6 @@ class Photos extends React.Component {
       .then(() => {
         localStorage.setItem("page", +page + 1);
         window.scrollTo({ top: scrollPosition });
-        if (!usernameIsAvailable) {
-          this.getUserName();
-          usernameIsAvailable = true;
-        }
       });
   }
 
@@ -101,7 +96,6 @@ const mapStateToProps = (photos) => ({ photos });
 function mapDispatchToProps(dispatch) {
   return {
     loadPhotos: (photos) => dispatch(loadPhotos(photos)),
-    getUserName: (photos) => dispatch(getUserName(photos)),
   };
 }
 
