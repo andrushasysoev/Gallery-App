@@ -12,16 +12,25 @@ export const getUserName = (user) => {
   };
 };
 
-export const likePhoto = (id) => {
+export const getPhoto = (photo) => {
   return {
-    type: "LIKE_PHOTO",
-    id,
+    type: "GET_PHOTO",
+    photo,
   };
 };
 
-export const unlikePhoto = (id) => {
+export const likePhoto = (photo) => {
+  return {
+    type: "LIKE_PHOTO",
+    id: photo.id,
+    likes: photo.likes,
+  };
+};
+
+export const unlikePhoto = (photo) => {
   return {
     type: "UNLIKE_PHOTO",
-    id,
+    id: photo.id,
+    likes: photo.likes,
   };
 };

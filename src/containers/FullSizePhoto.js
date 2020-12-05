@@ -2,8 +2,12 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { likePhoto, unlikePhoto } from "../actions";
-import { unsplashLikePhoto, unsplashUnlikePhoto } from "../unsplash";
+import { getPhoto, likePhoto, unlikePhoto } from "../actions";
+import {
+  unsplashLikePhoto,
+  unsplashUnlikePhoto,
+  unsplashGetPhoto,
+} from "../unsplash";
 
 import getFormattedDate from "../utils";
 
@@ -14,17 +18,10 @@ import close from "../assets/003-left-arrow.png";
 class FullSizePhoto extends React.Component {
   constructor(props) {
     super(props);
+    this.getPhoto = this.getPhoto.bind(this);
 
     const id = location.pathname.split("photos/")[1];
-    let photo = {};
-
-    props.photos.forEach((element) => {
-      if (element.id === id) {
-        photo = element;
-      }
-    });
-
-    this.state = { photo };
+    this.getPhoto(id);
   }
 
   componentDidMount() {
@@ -35,16 +32,32 @@ class FullSizePhoto extends React.Component {
     document.body.style.overflowY = "auto";
   }
 
+  getPhoto(id) {
+    if (this.props.photos.length > 0) {
+      this.props.photos.forEach((photo) => {
+        if (photo.id === id) {
+          this.props.getPhoto(photo);
+        }
+      });
+    } else {
+      unsplashGetPhoto(id, localStorage.getItem("token")).then((photo) => {
+        this.props.getPhoto(photo);
+      });
+    }
+  }
+
   toggleLike() {
     const token = localStorage.getItem("token");
-    const id = this.state.photo.id;
+    const id = this.props.photo.id;
 
-    if (this.state.photo.liked_by_user) {
-      unsplashUnlikePhoto(id, token);
-      this.props.unlikePhoto(id);
+    if (this.props.photo.liked_by_user) {
+      unsplashUnlikePhoto(id, token).then((json) =>
+        this.props.unlikePhoto(json.photo)
+      );
     } else {
-      unsplashLikePhoto(id, token);
-      this.props.likePhoto(id);
+      unsplashLikePhoto(id, token).then((json) =>
+        this.props.likePhoto(json.photo)
+      );
     }
   }
 
@@ -61,13 +74,13 @@ class FullSizePhoto extends React.Component {
       },
     };
 
-    const id = this.state.photo.id;
-    const url = this.state.photo.links.html;
-    const autor = this.state.photo.user.name;
-    const image = this.state.photo.urls.small;
-    const isLiked = this.state.photo.liked_by_user;
-    const likesCount = this.state.photo.likes;
-    const date = getFormattedDate(this.state.photo.updated_at);
+    const id = this.props.photo.id;
+    const url = this.props.photo.links.html;
+    const autor = this.props.photo.user.name;
+    const image = this.props.photo.urls.small;
+    const isLiked = this.props.photo.liked_by_user;
+    const likesCount = this.props.photo.likes;
+    const date = getFormattedDate(this.props.photo.updated_at);
 
     return (
       <div className="overlay-modal">
@@ -103,15 +116,14 @@ class FullSizePhoto extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    photos: state.photos.map((photo, i) => {
-      photo.number = i;
-      return photo;
-    }),
+    photos: state.photos,
+    photo: state.currentPhoto,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    getPhoto: (photo) => dispatch(getPhoto(photo)),
     likePhoto: (id) => dispatch(likePhoto(id)),
     unlikePhoto: (id) => dispatch(unlikePhoto(id)),
   };

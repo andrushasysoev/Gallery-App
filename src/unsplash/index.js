@@ -32,12 +32,20 @@ export const unsplashLoadPhotos = (page, token, perPage = 10) => {
   return unsplash.photos.listPhotos(page, perPage, "latest").then(toJson);
 };
 
+export const unsplashGetPhoto = (id, token) => {
+  unsplash.auth.setBearerToken(token);
+
+  return unsplash.photos.getPhoto(id).then(toJson);
+};
+
 export const unsplashLikePhoto = (id, token) => {
   unsplash.auth.setBearerToken(token);
-  unsplash.photos.likePhoto(id);
+
+  return unsplash.photos.likePhoto(id).then(toJson);
 };
 
 export const unsplashUnlikePhoto = (id, token) => {
   unsplash.auth.setBearerToken(token);
-  unsplash.photos.unlikePhoto(id);
+
+  return unsplash.photos.unlikePhoto(id).then(toJson);
 };

@@ -6,8 +6,8 @@ const photos = (state = [], action) => {
     case "LIKE_PHOTO":
       return state.map((photo) => {
         if (photo.id === action.id) {
-          photo.likes++;
-          photo.liked_by_user = !photo.liked_by_user;
+          photo.likes = action.likes;
+          photo.liked_by_user = true;
           return photo;
         }
         return photo;
@@ -16,8 +16,8 @@ const photos = (state = [], action) => {
     case "UNLIKE_PHOTO":
       return state.map((photo) => {
         if (photo.id === action.id) {
-          photo.likes--;
-          photo.liked_by_user = !photo.liked_by_user;
+          photo.likes = action.likes;
+          photo.liked_by_user = false;
           return photo;
         }
         return photo;
