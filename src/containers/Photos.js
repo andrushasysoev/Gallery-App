@@ -74,7 +74,7 @@ class Photos extends React.Component {
             {this.props.photos.map((photo, i) => {
               return (
                 <PhotoPreview
-                  key={i}
+                  key={photo.id}
                   id={photo.id}
                   autor={photo.user.name}
                   url={photo.user.links.html}

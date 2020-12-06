@@ -223,9 +223,6 @@ header {
 }
 
 .full-photo {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: flex-start;
     max-height: 100%;
     max-width: 100%;
     margin: 0;
@@ -255,14 +252,10 @@ header {
     font-size: 16px;
 }
 
-.full-photo__image {
-    flex: 0 25px auto;
-}
-
 .full-photo__like-button {
+    display: block;
     align-self: center;
-    flex: 25px 25px 25px;
-    margin: 15px 0 15px;
+    margin: 12.5px auto;
     width: 25px;
     height: 25px;
     border: none;
@@ -283,7 +276,7 @@ header {
 
 .full-photo__time {
     display: block;
-    align-self: flex-end;
+    text-align: right;
     margin-top: 5px;
     color: darkgray;
     font-size: 12px;

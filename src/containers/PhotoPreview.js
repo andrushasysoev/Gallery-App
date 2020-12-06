@@ -13,21 +13,23 @@ class PhotoPreview extends React.Component {
     const bgImageLike = {
       backgroundImage: "url(" + like + ")",
     };
+    
+    const { key, id, autor, url, image, likesCount, date } = this.props;
 
     return (
-      <li className="photo-gallery__item" key={this.props.key}>
+      <li className="photo-gallery__item" key={key}>
         <article className="photo-gallery__wrapper">
           <h2 className="photo-gallery__heading">
-            <a href={this.props.url}>{this.props.autor}</a>
+            <a href={url}>{autor}</a>
           </h2>
-          <Link to={`/photos/${this.props.id}`}>
-            <img className="photo-gallery__image" src={this.props.image} />
+          <Link to={`/photos/${id}`}>
+            <img className="photo-gallery__image" src={image} />
 
             <div className="photo-gallery__likes-count" style={bgImageLike}>
-              {this.props.likesCount}
+              {likesCount}
             </div>
 
-            <time className="photo-gallery__time">{this.props.date}</time>
+            <time className="photo-gallery__time">{date}</time>
           </Link>
         </article>
       </li>
