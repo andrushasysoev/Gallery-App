@@ -294,7 +294,7 @@ header {
         justify-content: center;
     }
     
-    .current-time {
+    .logo__user-data {
         display: none;
     }
 }
